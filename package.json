@@ -1,0 +1,35 @@
+{
+  "name": "phony",
+  "version": "1.0.0",
+  "description": "test service ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "template",
+    "phony"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "nodemon": "^2.0.5"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "joi": "^17.6.0",
+    "joi-password-complexity": "^5.1.0",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "redis": "^4.0.4",
+    "sequelize": "^6.17.0",
+    "util": "^0.12.4"
+  }
+}
