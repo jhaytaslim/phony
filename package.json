@@ -4,13 +4,14 @@
   "description": "test service ",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "yarn migrate && nodemon index.js",
+    "start": "yarn migrate && node index.js",
     "migrate": "npx sequelize-cli db:migrate",
-    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "migrate:reset": "yarn migrate:undo && yarn migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo:all ",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "pretest": "cross-env NODE_ENV=test ",
-    "protest": "cross-env NODE_ENV=test npm run migrate:reset"
+    "protest": "cross-env NODE_ENV=test yarn migrate:reset"
   },
   "jest": {
     "testEnvironment": "node",

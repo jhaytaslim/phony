@@ -15,7 +15,8 @@ const Auth = async (req, res, next) => {
 
     const services = new Services()
     const user = await services.validateUser(login, password)
-    console.log('userxy: ', user)
+    
+    if (!user) return JsonResponse(res, 401,null, 'Unautorized access')
 
     //verify user
     if (login.length < 6 || password.length < 6) {
