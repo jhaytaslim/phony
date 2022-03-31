@@ -33,7 +33,7 @@ describe('Post Endpoints', () => {
       .get('/');
     expect(res.statusCode).toEqual(200)
     console.log(res.text)
-    expect(res.text).toEqual('Welcome Alive!')
+    expect(res.text).toEqual('Welcome Alive!!')
     
   })
 })
@@ -51,13 +51,13 @@ describe('Post Endpoints', () => {
 })
 
 describe('Post Endpoints', () => {
-  it('should confirm inbound is accessible with basic auth with 400 status ', async () => {
+  it('should confirm inbound is inaccessible with basic auth of non-existent credential with 401 status ', async () => {
     const auth = "Basic " + new Buffer.from("oyinmomo" + ":" + "password1").toString("base64");
 
     const res = await request
       .post('/inbound/sms')
       .set('Authorization', auth);
-    expect(res.statusCode).toEqual(400)
+    expect(res.statusCode).toEqual(401)
     console.log(res.body)
     expect(res.body).toHaveProperty('error')
     expect(res.body.msg).toEqual('')

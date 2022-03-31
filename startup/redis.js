@@ -5,26 +5,20 @@ const redisOption = {
   NX: true
 }
 
-const client = createClient()
+const client = createClient({
+  port: process.env.REDIS_PORT,
+  host: process.env.REDIS_HOST,
+})
 ;(async () => {
   client.on('error', err => console.log('Redis Client Error', err))
 
   await client.connect()
 
-  await set({ key:"1", value: "from" })
-  await set({ key:"2", value: "from2" })
-
-  // const one = await get("1")
-  // console.log('one: ', one)
-
-  // const all = await getAll("1")
-  // console.log('all: ', all)
 })()
 
 
 const set = async (item = { key, value }) => {
   await client.set(item.key, JSON.stringify(item.value), redisOption)
-  // await client.hSet(item.key, item.value, redisOption)
 }
 
 const get = async key => {
