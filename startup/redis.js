@@ -1,30 +1,71 @@
-const redis = require('redis')
-const { promisify } = require('util')
+const { createClient } = require('redis')
 
-// create redis client
-// const client = redis.createClient({
-// //   host: process.env.REDIS_HOST,
-//   port: parseInt(process.env.REDIS_PORT),
-// //   password: process.env.REDIS_PASSWORD
-// })
+const redisOption = {
+  EX: 14400,
+  NX: true
+}
 
-let client
-(async () => {
-    try {
-       client = redis.createClient({ socket: { port: 6379 } });
-      await client.connect();
-      console.log('connected');
-    } catch (err) {
-      console.error(err)
-    }
-  })()
+const client = createClient({
+  port: process.env.REDIS_PORT,
+  host: process.env.REDIS_HOST,
+})
+;(async () => {
+  client.on('error', err => console.log('Redis Client Error', err))
 
-// redis.js doesn't support async utils as of writing this article
-// we can use the recommended workaround
-const getAsync = promisify(client.get).bind(client)
-const setAsync = promisify(client.set).bind(client)
+  await client.connect()
+
+})()
+
+
+const set = async (item = { key, value }) => {
+  await client.set(item.key, JSON.stringify(item.value), redisOption)
+}
+
+const get = async key => {
+  const value = await client.get(key)
+  return JSON.parse(value)
+}
+
+getAll = async function (key) {
+  const all = await client.hGetAll()
+  console.log('fdfhjjg: ', all)
+  return JSON.parse(all)
+
+
+  // let jobs = []
+  // await client.keys('*', function (err, keys) {
+  //   console.log("start: ")
+  //   if (err) return console.log(err)
+  //   if (keys) {
+  //     console.log("here: ")
+  //     async.map(
+  //       keys,
+  //       function (key, cb) {
+  //         client.get(key, function (error, value) {
+  //           if (error) return cb(error)
+  //           console.log("job: ",key, value)
+  //           var job = {}
+  //           job['key'] = key
+  //           job['value'] = value
+  //           cb(null, job)
+  //         })
+  //       },
+  //       function (error, results) {
+  //         if (error) return console.log(error)
+  //         console.log("results: ",results)
+  //         jobs = results
+  //         // res.json({ data: results })
+  //       }
+  //     )
+  //   }
+  // })
+
+  // return jobs
+}
 
 module.exports = {
-  getAsync,
-  setAsync
+  set,
+  get,
+  getAll,
+  client
 }
