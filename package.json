@@ -6,7 +6,17 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "pretest": "cross-env NODE_ENV=test ",
+    "protest": "cross-env NODE_ENV=test npm run migrate:reset"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "keywords": [
     "api",
@@ -15,6 +25,7 @@
   ],
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.5.0",
     "nodemon": "^2.0.5"
   },
@@ -24,12 +35,14 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
+    "jest": "^27.5.1",
     "joi": "^17.6.0",
     "joi-password-complexity": "^5.1.0",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "redis": "^4.0.4",
     "sequelize": "^6.17.0",
+    "supertest": "^6.2.2",
     "util": "^0.12.4"
   }
 }

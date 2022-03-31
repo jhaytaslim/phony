@@ -23,20 +23,22 @@ app.use(express.static('public'))
 // app.use(fileUpload({}))
 
 
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);
+
+function cleanup() {
+    client.quit(function() {
+        console.log('Redis client stopped.');
+        server.stop(function() {
+            console.log('Server stopped.');
+            process.exit();
+        });
+    });
+};
+
+
 // routing endpoint for all services
 app.all(`*`, Auth, async (req, res, next) => next())
-
-// {
-//   try {
-    
-//     return next()
-//   } catch (err) {
-//     console.log(err)
-//     next(err)
-//     return
-//   }
-
-// })
 
 app.get(`/`, (req,res,next)=>{
   res.status(200).send("Welcome Alive!");
@@ -44,6 +46,7 @@ app.get(`/`, (req,res,next)=>{
 })
 
 const controller = require('../controllers')
+const { client } = require('./redis')
 app.post(`/inbound/sms`, controller.sms.inbound)
 app.post(`/outbound/sms`, controller.sms.outbound)
 
