@@ -4,9 +4,20 @@
   "description": "test service ",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "yarn migrate && nodemon index.js",
+    "start": "yarn migrate && node index.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "yarn migrate:undo && yarn migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo:all ",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "pretest": "cross-env NODE_ENV=test ",
+    "protest": "cross-env NODE_ENV=test yarn migrate:reset"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "keywords": [
     "api",
@@ -15,6 +26,7 @@
   ],
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.5.0",
     "nodemon": "^2.0.5"
   },
@@ -24,12 +36,14 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
+    "jest": "^27.5.1",
     "joi": "^17.6.0",
     "joi-password-complexity": "^5.1.0",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "redis": "^4.0.4",
     "sequelize": "^6.17.0",
+    "supertest": "^6.2.2",
     "util": "^0.12.4"
   }
 }
