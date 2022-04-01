@@ -16,7 +16,6 @@ console.log('dfg...', process.env.REDIS_PORT, process.env.REDIS_HOST, url)
 
 
 const client = createClient({
-  // 'redis[s]://[[username][:password]@][host][:port][/db-number]'
   url: url
 })
 
